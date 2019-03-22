@@ -1,0 +1,412 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int num;
+    cin>>num;
+    int fig = 16 - 1;
+    int count = 1;
+    while(true) {
+        if(fig>num) {
+            break;
+        }
+        fig = (fig + 1)*16 - 1;
+        count++;
+    }
+    int ox[count];
+    ox[0] = num%16;
+    for(int i = 1;i<count;i++) {
+        int divd = 16; 
+        for(int j = 0;j<i;j++) {
+            divd = divd * 16;
+        }
+        ox[i] = (num%divd - ox[i-1]*divd/16/16)/16;
+    }
+    for(int i = count-1;i>=0;i--) {
+        if(ox[i] == 10){
+            cout<<'A';
+        }else if(ox[i] == 11){
+            cout<<'B';
+        }else if(ox[i] == 12){
+            cout<<'C';
+        }else if(ox[i] == 13){
+            cout<<'D';
+        }else if(ox[i] == 14){
+            cout<<'E';
+        }else if(ox[i] == 15){
+            cout<<'F';
+        }else {
+            cout<<ox[i];
+        }
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+//16进制=>8进制
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int num, num2;
+    cin>>num;
+    num2 = 0;
+    string str[num];
+    while(num2<num){
+        cin>>str[num2];
+        num2++;
+    }
+    for(int i = 0;i<num;i++) {
+        int len = str[i].length();
+        int newO[len], newT[len+1];
+        for(int j = 0;j<len;j++) {
+            if(str[i][j] == 'A') {
+                newO[j] = 10;
+            }else if(str[i][j] == 'B') {
+                newO[j] = 11;
+            }else if(str[i][j] == 'C') {
+                newO[j] = 12;
+            }else if(str[i][j] == 'D') {
+                newO[j] = 13;
+            }else if(str[i][j] == 'E') {
+                newO[j] = 14;
+            }else if(str[i][j] == 'F') {
+                newO[j] = 15;
+            }else {
+                newO[j] = str[i][j] -48;
+            }
+        }
+        int sum = 0;
+        for(int j = 0;j<len;j++) {
+            sum = sum*16 + newO[j];
+            //cout<<newO[j]<<endl;
+        }
+        //cout<<sum<<endl;
+        newT[len] = sum%8;
+        //cout<<"wei: "<<newT[len]<<endl;
+        for(int j = len-1;j>=0;j--) {
+            int divd = 8;
+            for(int k = 0;k<(len - j);k++) {
+                divd = divd*8;
+            }
+            //cout<<divd<<endl;
+
+            newT[j] = (sum%divd)/(divd/8);
+            //cout<<"wei: "<<62/8<<endl;
+
+        }
+        for(int j = 0;j<=len;j++){
+            if( j==0 && newT[j] == 0){
+                continue;
+            }
+            cout<<newT[j];
+        }
+        cout<<endl;
+    }
+    return 0;
+}
+
+//分解质因数
+#include<bits/stdc++.h>
+using namespace std;
+
+int isprime(int n) {
+    if(n == 2 || n == 3) {
+        return 1;
+    }
+    for(int i = 2;i*i<=n;i++){
+        if(n%i == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int main() {
+    int a,b;
+    cin>>a>>b;
+    for(int i=a;i<=b;i++) {
+        cout<<i<<"=";
+        int ans = i;
+        int exs = 0;
+        while(true) {
+            if(isprime(ans)&&exs == 0){
+                cout<<ans<<endl;
+                break;
+            }else {
+                exs = 0;
+            }
+            for(int j = 2;j*j<=i;j++){
+                if(isprime(j) && ans%j==0) {
+                    cout<<j;
+                    ans = ans/j;
+                    exs = 1;
+                    break;
+                }
+            }
+            if(ans == 1){
+                break;
+            }else if(!isprime(ans) && exs == 1) {
+                cout<<"*";
+            }else if(isprime(ans) && exs == 1) {
+                cout<<"*"<<ans<<endl;
+                break;
+            }
+        }
+    }
+    return 0;
+}
+//matrix
+#include<bits/stdc++.h>
+using namespace std;
+int cal(int arrayA[],int arrayB[],int len) {
+    int ans = 0;
+    for(int i = 0;i<len;i++) {
+        ans += arrayA[i] * arrayB[i];
+    }
+    return ans;
+}
+
+int main() {
+    int n,m;
+    int count = 0;
+    cin>>n>>m;
+    int matrix[n][n],matrix2[n][n],matrix3[n][n];
+    for(int i=0;i<n;i++) {
+        for(int j=0;j<n;j++) {
+            cin>>matrix[i][j];
+            matrix2[i][j]=matrix[i][j];
+        }
+    }
+    while(count<m-1) {
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<n;j++) {
+                int array1[n],array2[n];
+                for(int k=0;k<n;k++) {
+                    array1[k] = matrix2[i][k];
+                    array2[k] = matrix[k][j];
+                }
+                matrix3[i][j]=cal(array1, array2, n);
+                cout<<matrix3[i][j]<<endl;
+            }
+        }
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<n;j++) {
+                matrix2[i][j]=matrix3[i][j];
+            }
+        }
+        count++;
+    }
+    for(int i=0;i<n;i++) {
+        for(int j=0;j<n;j++) {
+            cout<<matrix2[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    return 0;
+}
+//矩形面积交
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int a1,b1,c1,d1;
+    int a2,b2,c2,d2;
+    int a,b;
+    int x[2];
+    int y[2];
+    double s = 0.0;
+    cin>>a1>>b1>>c1>>d1;
+    cin>>a2>>b2>>c2>>d2;
+    x[0] = a1;
+    x[1] = c1;
+    sort(x,x+2);
+    a1 = x[0];
+    c1 = x[1];
+    
+    x[0] = a2;
+    x[1] = c2;
+    sort(x,x+2);
+    a2 = x[0];
+    c2 = x[1];
+
+    y[0] = b1;
+    y[1] = d1;
+    sort(y,y+2);
+    b1 = y[0];
+    d1 = y[1];
+    
+    y[0] = b2;
+    y[1] = d2;
+    sort(y,y+2);
+    b2 = y[0];
+    d2 = y[1];
+
+    if(a1<=a2 && b1<=b2) { //1 down
+        if(c1<=a2 && d1<=b2) {
+            printf("%.2f\n",s);
+        }else {
+            s = 1.0*(c1 - a2)*(d1 - b2);
+            printf("%.2f\n",s);
+        }
+    }else {                //2 down
+        if(c2<=a1 && d2<=b1) {
+            printf("%.2f\n",s);
+        }else {
+            s = 1.0*(c2 - a1)*(d2 - b1);
+            printf("%.2f\n",s);
+        }
+    }
+    return 0;
+}
+
+
+// 问题描述
+// 回文串，是一种特殊的字符串，它从左往右读和从右往左读是一样的。小龙龙认为回文串才是完美的。现在给你一个串，它不一定是回文的，请你计算最少的交换次数使得该串变成一个完美的回文串。
+// 交换的定义是：交换两个相邻的字符
+// 例如mamad
+// 第一次交换 ad : mamda
+// 第二次交换 md : madma
+// 第三次交换 ma : madam (回文！完美！)
+// 输入格式
+// 第一行是一个整数N，表示接下来的字符串的长度(N <= 8000)
+// 第二行是一个字符串，长度为N.只包含小写字母
+// 输出格式
+// 如果可能，输出最少的交换次数。
+// 否则输出Impossible
+// 样例输入
+// 5
+// mamad
+// 样例输出
+// 3
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int num;
+    cin>>num;
+    string s;
+    cin>>s;
+    int flag = 0;
+    int cnt = 0;
+    int pos = num - 1;
+    for(int i = 0;i<pos;i++) {
+        for(int j = num - 1;j >= i;j--) {
+            if(s[i] == s[j] && i != j) {
+                for(int k = j;k<pos;k++) {
+                    swap(s[k], s[k+1]);
+                    cnt++;
+                    cout<<s<<endl;
+                }
+                pos--;
+                break;
+            }else if(i == j && num%2 == 0) {
+                cout<<"Impossible"<<endl;
+                return 0;
+            }else if(i == j && num%2 == 1 && flag == 1) {
+                cout<<"Impossible"<<endl;
+                return 0;
+            }else if(i == j && num%2 == 1 && flag == 0) {
+                for(int l = j;l<=num/2-1;l++) {
+                    cnt++;
+                }
+                flag = 1;
+                break;
+            } 
+        }
+    }
+    cout<<cnt;
+    return 0;
+}
+
+//简单加法校园OJ
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+  string a, b;
+  cin>>a>>b;
+  
+  int k = 0;
+  int ten = 0;
+
+  if(a.length() >= b.length()) {
+    int j = a.length()-1;
+    int len = j+2;
+    int str[j+2] = {0};
+    for(int i = b.length() - 1;i>=0;i--) {
+      if(ten == 1) {
+        str[k] = 1;
+        ten = 0;
+      }
+      str[k] += (a[j] - 48) + (b[i] - 48);
+      ten = str[k]/10;
+      str[k] = str[k]%10;
+      k++;
+      j--;
+    }
+    for(int i = j;i>=0;i--) {
+      if(ten == 1) {
+        str[k] = 1;
+        ten = 0;
+      }
+      str[k] += a[i] - 48;
+      ten = str[k]/10;
+      str[k] = str[k]%10;
+      k++;
+    }
+    int pos;
+    for(int l = len-1;l>=0;l--){
+        if(str[l] != 0) {
+            pos = l;
+            break;
+        }
+    }
+    for(int l = pos;l>=0;l--){
+        cout<<str[l];
+    }
+  }else {
+    int j = b.length()-1;
+    int len = j+2;
+    int str[j+2] = {0};
+    for(int i = a.length() - 1;i>=0;i--) {
+      if(ten == 1) {
+        str[k] = 1;
+        ten = 0;
+      }
+      str[k] += b[j]+ a[i] - 96;
+      ten = str[k]/10;
+      str[k] = str[k]%10;
+      k++;
+      j--;
+    }
+    for(int i = j;i>=0;i--) {
+      if(ten == 1) {
+        str[k] = 1;
+        ten = 0;
+      }
+      str[k] +=b[i] - 48;
+      ten = str[k]/10;
+      str[k] = str[k]%10;
+      k++;
+    }
+    int pos;
+    for(int l = len-1;l>=0;l--){
+        if(str[l] != 0) {
+            pos = l;
+            break;
+        }
+    }
+    for(int l = pos;l>=0;l--){
+        cout<<str[l];
+    }
+  }
+  
+  return 0;
+}
+
