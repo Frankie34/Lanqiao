@@ -410,3 +410,80 @@ int main() {
   return 0;
 }
 
+
+//字符串Atoi
+
+int myAtoi(string s) {
+
+    if(s.length() == 0)  // 空字符串直接劝退
+        return 0;
+    
+    int flag = 0;  // 判定数字位(包括)是否已开始                  
+    int minus = 0; // 如有负号置一
+    int pos;       // 用与记录数字位开始位置
+
+    // 处理前导串部分
+
+    for(int i=0;i<s.length();i++) {
+        // 可接受前导部分
+        if(isspace(s[i]) && flag ==0) { // 如数字位未开始切此处为空格则继续后探
+            continue;
+        }
+        if(s[i] == '+'&& flag ==0) { // 如数字位未开始且此处为加号则记数字位开始
+            flag = 1;
+            continue;
+        }else if(s[i] == '-'&& flag ==0) { // 如数字位未开始且此处为减号
+            flag = 1;  // 记数字位开始
+            minus = 1; // 并记录负号
+            continue;
+        }else if(s[i] == '0') { // 如数字位从零开始则忽略前导零
+            flag = 1;  // 记数字位开始
+            continue;
+        }
+        
+        // 数字位起始位判断/获取
+        if(!isdigit(s[i])) { // 如遇前导非字符劝退
+            return 0; 
+        }else {
+            flag = 2; // 有数字位
+            pos = i; // 遇到非零字符即数字位开始, 赋值记录数字位开始位置的变量
+            break;
+        }
+    }
+    if(flag == 1) {  // 如无数字位, 劝退
+        return 0;
+    }
+    // 第一次取子串, 定义数字串起始位置
+    s = s.substr(pos);
+    
+    // 获取数字串尾部
+    int j = 0;
+    while(isdigit(s[j])) { // 如为数字则继续前探
+        j++;
+    }
+
+    // 第二次取子串, 定义数字串终止位置
+    s = s.substr(0,j);
+    if(s.length() == 0) { // 如字符串为空, 劝退
+        return 0;
+    }else if(s.length() > 10) { // 如字符串位数超出int 范围返回最大值
+        if(minus == 0) {
+            return 2147483647;
+        }else {
+            return -2147483648;
+        }
+    }
+
+    long long int numb = stoll(s);
+
+    if(numb >= 2147483648 && minus == 0) {
+        return 2147483647;
+    }else if(numb > 2147483648 && minus == 1) {
+        return -2147483648;
+    }else {
+        if(minus == 1) // 如前缀有负号, 取反
+            numb = 0 - numb;
+        return (int)numb;
+    }
+    return numb;
+}
