@@ -487,3 +487,26 @@ int myAtoi(string s) {
     }
     return numb;
 }
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+        if(head == NULL || head->next == NULL) {
+            return NULL; // 链表为空劝退
+        }
+        ListNode* p = head;
+        ListNode* q = head;
+
+        for(int i = 1;i <= n;i++) { // p指向第n+1位
+            p = p->next;
+        }
+        if(p == NULL) { // 如果第n+1位为空
+            head=head->next; // 则从末尾开始倒数第n位为第一位即 head
+            return head;
+        }
+
+        p = p->next; // 由于 p 终止于末位的后一位置执行本行 (q 终止于倒数第 n+1 位)
+        while(p != NULL) { // 判断是否到达末位的后一位置
+            p = p->next;
+            q = q->next;
+        }
+        q->next = q->next->next;
+        return head;
+    }
