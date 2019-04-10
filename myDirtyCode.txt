@@ -510,3 +510,31 @@ ListNode* removeNthFromEnd(ListNode* head, int n) {
         q->next = q->next->next;
         return head;
     }
+    
+    //19
+    class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        if(head == NULL || head->next == NULL) {
+            return NULL;
+        }
+        
+        ListNode* q = head;
+        ListNode* p = head;
+        
+        for(int i=1;i<=n;i++) {
+            q = q->next;
+        }
+        if(q == NULL) {
+            head = head->next;
+            return head;
+        }
+        q = q->next;
+        while(q != NULL) {
+            q = q->next;
+            p = p->next;
+        }
+        p->next = p->next->next;
+        
+        return head;
+    }
