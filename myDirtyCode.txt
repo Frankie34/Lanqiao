@@ -538,3 +538,23 @@ public:
         
         return head;
     }
+    
+    //141
+    class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *p = head;
+        int count = 0;
+        int setSize = 0;
+        set<ListNode *> aset;
+        while(p!=NULL) {
+            setSize = aset.size();
+            aset.insert(p);
+            if(setSize == aset.size()) {
+                return true;
+            }
+            p = p->next;
+        }
+        return false;
+    }
+};
