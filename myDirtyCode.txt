@@ -558,3 +558,52 @@ public:
         return false;
     }
 };
+//142 基本没变同142
+//148
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL)
+            return NULL;
+        ListNode *p = head;
+        ListNode *q = head;
+        set<int> s;
+        int num[999999]={0};
+        int numM[999999]={0};
+        while(p!=NULL) {
+            int v = p->val;
+            if(v < 0) {
+                int v2= 0-v;
+                numM[v2]++;
+            }else {
+                num[v]++;
+            }
+            s.insert(v);
+            p = p->next;
+        }
+        while(q!=NULL) {
+            int a = *(s.begin());
+            q->val = a;
+            if(a<0){
+                int a2 = 0-a;
+                numM[a2]--;
+                while(numM[a2]!=0) {
+                    q = q->next;
+                    q->val = a;
+                    numM[a2]--;
+                }
+            }else {
+                num[a]--;
+                while(num[a]!=0) {
+                    q = q->next;
+                    q->val = a;
+                    num[a]--;
+                }
+            }
+            s.erase(a);
+            q = q->next;
+        }
+        return head;        
+    }
+};
+
