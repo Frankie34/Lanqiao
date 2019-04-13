@@ -634,3 +634,31 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
     }
 }
 
+//206
+ListNode* reverseList(ListNode* head) {
+    if(head == NULL)
+        return NULL;
+    if(head->next == NULL)
+        return head;
+    if(head->next->next == NULL) {
+        ListNode* a = head;
+        ListNode* b = head->next;
+        b->next = a;
+        a->next = NULL;
+        return b;
+    }
+        
+    
+    ListNode* p = head;
+    ListNode* q = head->next;
+    ListNode* r = head->next->next;
+    p->next = NULL;
+    while(r!=NULL) {
+        q->next = p;
+        p = q;
+        q = r;
+        r = r->next;
+    }
+    q->next = p;
+    return q;
+}
