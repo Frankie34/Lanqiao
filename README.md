@@ -45,8 +45,8 @@ give a try on Algorithm for Offer
 
 ## 目前已完成情况：
 
-10 / 1019
+17 / 1019
 Solved
 
-6 / 100
+17 / 100
 Solved (Top 100 liked)
