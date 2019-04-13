@@ -607,3 +607,30 @@ public:
     }
 };
 
+//160
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA == NULL || headB == NULL) {
+            return NULL;
+        }
+        // set <ListNode *> s;
+        ListNode *p = headA;
+        ListNode *q = headB;
+        int lenmax = getlength(p) + getlength(q);
+        int count = 0;
+        while(p != q) {
+            if(count == lenmax) {
+                return NULL;
+            }
+            p = p == NULL ? headB : p->next;
+            q = q == NULL ? headA : q->next;
+            ++count;
+            
+            
+        }
+        
+        
+        return q;
+    }
+}
+
