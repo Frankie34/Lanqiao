@@ -662,3 +662,23 @@ ListNode* reverseList(ListNode* head) {
     q->next = p;
     return q;
 }
+
+class Solution {
+public:
+    vector<int> inorder(TreeNode* aNode, vector<int> &vec) {
+        if (aNode == NULL)
+            return vec;
+        inorder(aNode->left, vec);
+        vec.push_back(aNode->val);
+        inorder(aNode->right, vec);
+        return vec;
+    }
+
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> avector = {};
+        if(root == NULL)
+            return avector;
+        inorder(root, avector);
+        return avector;    
+    }
+};
